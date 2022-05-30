@@ -27,11 +27,15 @@ end
 longest                                        #=> "sheep"
 =end
 
-def reduce(obj, acc = omitted = true)
+NOT_ASSIGNED = Object.new
+
+def reduce(obj, acc = NOT_ASSIGNED)
   return Enumerable.new {} if block_given? != true
 
-  acc = obj[0] if omitted
-  counter = omitted ? 1 : 0
+  counter = acc.equal?(NOT_ASSIGNED) ? 1 : 0
+
+  acc = obj[0] if acc.equal?(NOT_ASSIGNED)
+
   until counter == obj.size
     acc = yield(acc, obj[counter])
     counter += 1
