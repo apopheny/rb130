@@ -1,12 +1,8 @@
-def sequence
-  counter = 0
-  a = Proc.new { 
-    puts a
-    counter += 1 
-  }
-end
+# in temp.rb
+require 'minitest/autorun'
 
-s1 = sequence
-s2 = sequence
-3.times { puts s1.call }
-3.times { puts s2.call }
+class MyFirstTest < Minitest::Test
+  def test_first_test
+    assert true
+  end
+end
