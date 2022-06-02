@@ -1,8 +1,5 @@
-# in temp.rb
-require 'minitest/autorun'
+p __FILE__
 
-class MyFirstTest < Minitest::Test
-  def test_first_test
-    assert true
-  end
-end
+p $0
+
+p $PROGRAM_NAME
