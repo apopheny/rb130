@@ -1,31 +1,33 @@
-# transaction.rb
+require 'minitest/autorun'
+require 'minitest/reporters'
 
-class Transaction
-  attr_reader :item_cost
-  attr_accessor :amount_paid
+MiniTest::Reporters.use!
 
-  def initialize(item_cost)
-    @item_cost = item_cost
-    @amount_paid = 0
+require_relative '../cash_register'
+require_relative '../transaction'
+
+class CashRegisterTest < MiniTest::Test
+  def setup
+    @register = CashRegister.new(500)
+    @transaction = Transaction.new(250)
   end
 
-  def prompt_for_payment(input: $stdin)
-    loop do
-      puts "You owe $#{item_cost}.\nHow much are you paying?"
-      @amount_paid = input.gets.chomp.to_f # notice that we call gets on that parameter
-      break if valid_payment? && sufficient_payment?
-      puts 'That is not the correct amount. ' \
-           'Please make sure to pay the full cost.'
-    end
+  # We now have the foundation of our CashRegister test class set up. Let's start testing! We'll start with the CashRegister#accept_money method. Write a test for the #accept_money method.
+  def test_accept_money
+    prior_amount = @register.total_money
+    @transaction.amount_paid = 100
+    @register.accept_money(@transaction)
+    assert_equal(prior_amount + 100, @register.total_money)
   end
 
-  private
-
-  def valid_payment?
-    amount_paid > 0.0
+  # Write a test for the method, CashRegister#change.
+  def test_change
+    @transaction.amount_paid = 500
+    assert_equal(250, @register.change(@transaction))
   end
 
-  def sufficient_payment?
-    amount_paid >= item_cost
+  # Write a test for method CashRegister#give_receipt that ensures it displays a valid receipt.
+  def test_receipt
+    assert_output(/You've paid \$250./) { @register.give_receipt(@transaction) }
   end
 end

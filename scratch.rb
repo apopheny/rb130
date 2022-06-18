@@ -1,5 +1,4 @@
-p __FILE__
+require 'stringio'
+a = StringIO.new('taco')
 
-p $0
-
-p $PROGRAM_NAME
+p a.read
